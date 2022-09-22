@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Personal14/AndroidStudioProjects/ClasificadorPapas/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/Personal14/AndroidStudioProjects/ClasificadorPapas/app/src/main/res/layout/device_adapter_view.xml" value="0.19067028985507245" />
+        <entry key="..\:/Users/Personal14/AndroidStudioProjects/ClasificadorPapas/app/src/main/res/layout/layout_conf_conexion.xml" value="0.25" />
+        <entry key="..\:/Users/Personal14/AndroidStudioProjects/ClasificadorPapas/app/src/main/res/layout/layout_config_bt.xml" value="0.25" />
+        <entry key="..\:/Users/Personal14/AndroidStudioProjects/ClasificadorPapas/app/src/main/res/menu/menu_opciones.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
