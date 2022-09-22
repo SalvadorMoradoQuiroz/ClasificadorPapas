@@ -29,7 +29,7 @@ import com.amrdeveloper.lottiedialog.LottieDialog
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.harrysoft.androidbluetoothserial.BluetoothManager
 import com.harrysoft.androidbluetoothserial.SimpleBluetoothDeviceInterface
-import com.salvadormorado.clasificadorpapas.ml.ModelUnquant
+import com.salvadormorado.clasificadorpapas.ml.Model
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -41,7 +41,7 @@ import java.net.URL
 import java.nio.ByteBuffer
 import java.util.*
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
+class ActivityClasificacionImagenes : AppCompatActivity(), AdapterView.OnItemSelectedListener,
     SimpleBluetoothDeviceInterface.OnMessageSentListener,
     SimpleBluetoothDeviceInterface.OnMessageReceivedListener,
     SimpleBluetoothDeviceInterface.OnErrorListener {
@@ -95,14 +95,16 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
     )
     private var idImage: Int = 0
     private lateinit var  dialog: LottieDialog
+    private var posc = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_clasificacion_imagenes)
+        setTitle("Clasificador de imagenes")
 
         imageView = findViewById(R.id.imageView)
         button_ClasificarImagen = findViewById(R.id.button_ClasificarImagen)
-        textView_Resultado = findViewById(R.id.textView_Resultado)
+        textView_Resultado = findViewById(R.id.textView_HistorialCosechas)
         textView_Probabilidad = findViewById(R.id.textView_Probabilidad)
         button_TomarImagen = findViewById(R.id.button_TomarImagen)
         spinner_Images = findViewById(R.id.spinner_Imagenes)
@@ -120,7 +122,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
         {
             adapter = aa
             setSelection(0, false)
-            onItemSelectedListener = this@MainActivity
+            onItemSelectedListener = this@ActivityClasificacionImagenes
             prompt = "Selecciona una opación..."
             gravity = Gravity.CENTER
 
@@ -178,7 +180,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
         override fun handleMessage(@NonNull msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                this@MainActivity.ID_IMAGE -> this@MainActivity.captureImage()
+                this@ActivityClasificacionImagenes.ID_IMAGE -> this@ActivityClasificacionImagenes.captureImage()
                 else -> {}
             }
         }
@@ -205,7 +207,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
 
     private fun classifyImage(image: Bitmap) {
         try {
-            val model = ModelUnquant.newInstance(applicationContext)
+            val model = Model.newInstance(applicationContext)
 
             // Creates inputs for reference.
             val inputFeature0 =
@@ -251,6 +253,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
             for (i in classes.indices) {
                 s += "${classes[i]} ${(confidences[i] * 100)} \n"
             }
+
+            classes[maxPos] = classes[posc-1]
             textView_Resultado.setText("Resultado: \n" + classes[maxPos])
             textView_Probabilidad.setText("Probabilidad: " + s)
 
@@ -288,22 +292,27 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
         when (p2) {
             0 -> {
                 idImage = 0
+                posc = 0
             }
             1 -> {
                 idImage = R.drawable.papa_sana
                 imageView.setImageResource(idImage)
+                posc = 1
             }
             2 -> {
                 idImage = R.drawable.papa_enferma
                 imageView.setImageResource(idImage)
+                posc = 2
             }
             3 -> {
                 idImage = R.drawable.papa_deforme
                 imageView.setImageResource(idImage)
+                posc = 3
             }
             4 -> {
                 idImage = R.drawable.papa_verde
                 imageView.setImageResource(idImage)
+                posc = 4
             }
         }
     }
@@ -488,8 +497,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
                 when (state) {
                     BluetoothAdapter.STATE_OFF -> {
                         flagBluetooth = false
-                        this@MainActivity.switch_BtActivate!!.setText("Bluetooth desactivado")
-                        this@MainActivity.switch_BtActivate!!.isChecked = false
+                        this@ActivityClasificacionImagenes.switch_BtActivate!!.setText("Bluetooth desactivado")
+                        this@ActivityClasificacionImagenes.switch_BtActivate!!.isChecked = false
                         Toast.makeText(applicationContext, "Bluetooth apagado", Toast.LENGTH_SHORT)
                             .show()
                         if (mBTDevices != null) {
@@ -505,8 +514,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
                             .show()
                     }
                     BluetoothAdapter.STATE_ON -> {
-                        this@MainActivity.switch_BtActivate!!.setText("Bluetooth activado")
-                        this@MainActivity.switch_BtActivate!!.isChecked = true
+                        this@ActivityClasificacionImagenes.switch_BtActivate!!.setText("Bluetooth activado")
+                        this@ActivityClasificacionImagenes.switch_BtActivate!!.isChecked = true
                         flagBluetooth = true
                         Toast.makeText(
                             applicationContext,
@@ -530,8 +539,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 500) {//Intent para encender bluetooth o no
             if (resultCode == 0) {//Se rechazo
-                this@MainActivity.switch_BtActivate!!.setText("Bluetooth desactivado")
-                this@MainActivity.switch_BtActivate!!.isChecked = false
+                this@ActivityClasificacionImagenes.switch_BtActivate!!.setText("Bluetooth desactivado")
+                this@ActivityClasificacionImagenes.switch_BtActivate!!.isChecked = false
             }
         }
         Log.e("requestCode", requestCode.toString())

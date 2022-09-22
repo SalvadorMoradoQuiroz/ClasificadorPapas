@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:elevation="20dp"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ActivityClasificacionImagenes">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                         android:text="@string/tomar_imagen"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <Button
                         android:id="@+id/button_ClasificarImagen"
@@ -89,7 +89,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView_Resultado"
+                        android:id="@+id/textView_HistorialCosechas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -97,7 +97,8 @@
                         android:layout_marginRight="20dp"
                         android:text="@string/resultado"
                         android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/textView_Probabilidad"
@@ -108,7 +109,8 @@
                         android:layout_marginRight="20dp"
                         android:text="@string/probabilidad"
                         android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
