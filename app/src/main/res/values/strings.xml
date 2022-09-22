@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ClasificadorPapas</string>
+    <string name="clasificar_imagen">Clasificar imagen</string>
+    <string name="tomar_imagen">Tomar imagen</string>
+    <string name="resultado">Resultado:</string>
+    <string name="probabilidad">Probabilidad:</string>
+    <string name="todo">TODO</string>
+</resources>
